@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+    host-apache:
+        build: .
+        ports:
+            - 80:80
+        working_dir: /var/www/html
+        volumes:
+            - ../docker-moodledata:/var/moodledata
+        environment:
+            DB_TYPE: pgsql
+            DB_HOST: host-db
+            DB_USER: postgres
+            DB_PASSWORD: secret
+            DB_NAME: moodle
+            DOMAIN_NAME: "http://host-moodle"
+        networks:
+            minha-rede:
+                aliases:
+                    - host-moodle
+    host-db:
+        image: postgres:12
+        #restart: always
+        ports:
+            - 5432:5432
+        volumes:
+            - volume-postgres:/var/lib/postgres
+        environment: 
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: moodle
+        networks:
+            - minha-rede
+networks:
+    minha-rede:
+        name: minha-rede
+        external: true
+volumes:
+    volume-postgres:
+        external: true

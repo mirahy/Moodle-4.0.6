@@ -1,0 +1,32 @@
+{{- if .Values.volume.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name:  {{ .Values.volume.name }}-nfs
+spec:
+  capacity:
+    storage: {{ .Values.volume.capacity.storage }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    path: /exports/k8sufgd/{{ .Values.volume.name }}
+    server: nfs.ufgd.edu.br
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name:  {{ .Values.volume.name }}-nfs
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Mi
+{{- end }}
