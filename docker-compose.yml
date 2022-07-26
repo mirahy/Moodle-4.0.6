@@ -25,7 +25,7 @@ services:
         ports:
             - 5432:5432
         volumes:
-            - volume-postgres:/var/lib/postgres
+            - volume-postgres:/var/lib/postgresql/data
         environment: 
             POSTGRES_PASSWORD: secret
             POSTGRES_DB: moodle
