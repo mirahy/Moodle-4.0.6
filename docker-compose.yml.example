@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+    host-apache:
+        build: .
+        ports:
+            - 80:80
+        working_dir: /var/www/html
+        volumes:
+            - ../docker-moodledata:/var/moodledata
+        environment:
+            DB_TYPE: pgsql
+            DB_HOST: host-db
+            DB_USER: postgres
+            DB_PASSWORD: secret
+            DB_NAME: moodle
+            DOMAIN_NAME: "http://host-moodle"
+            LINK_SUPORTE: "https://suporte.ead.ufgd.edu.br" # usado para chamar web services
+            BLOCK_HOST_SUPORTE: "*"                         # usado para bloqueio de ip de requisições no auto-restore.php, "*" libera para todos
+            SENHA_PADRAO_CONTAS_MANUAIS: "eadufgd"
+            ADLDAP_CONTROLLERS: "200.129.209.80"
+            ADLDAP_BASEDN: "dc=ufgd,dc=edu,dc=br"
+            ADLDAP_ADMIN_USERNAME: "eadbind@ufgd.edu.br"
+            ADLDAP_ADMIN_PASSWORD: 
+        networks:
+            minha-rede:
+                aliases:
+                    - host-moodle
+    host-db:
+        image: postgres:12
+        #restart: always
+        ports:
+            - 5432:5432
+        volumes:
+            - volume-postgres:/var/lib/postgresql/data
+        environment: 
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: moodle
+        networks:
+            - minha-rede
+networks:
+    minha-rede:
+        name: minha-rede
+        external: true
+volumes:
+    volume-postgres:
+        external: true
