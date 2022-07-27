@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install gd intl zip pgsql pdo pdo_pgsql opcache xmlrpc soap ldap \
+    && docker-php-ext-install gd intl zip pgsql pdo pdo_pgsql opcache xmlrpc soap ldap exif \
     && wget -O /tmp/moodle.tgz https://download.moodle.org/stable311/moodle-latest-311.tgz \
     && tar -xzf /tmp/moodle.tgz --strip-components=1 -C /var/www/html
 
