@@ -59,7 +59,7 @@ if (isset ($_POST['modo']) && $_POST['modo'] == 'cadastra' ) {
         $courseId = isset ($_POST['courseid']) ? $_POST['courseid'] : null;
     $senhaPadrao = isset ($_POST['senhapadrao']) ? $_POST['senhapadrao'] : getenv('SENHA_PADRAO_CONTAS_MANUAIS');
     if ($usuarios)
-        adicionarUsuariosApenas($usuarios,$courseId,$senhaPadrao, isset($_POST['desativaEstudantes']) ? isset($_POST['desativaEstudantes']) : false);
+        adicionarUsuariosApenas($usuarios,$courseId,$senhaPadrao, isset($_POST['desativaEstudantes']) ? (bool)$_POST['desativaEstudantes'] : false);
     else 
         echo '<span style="color: red;">Sem usuários para adicionar!</span><br>';
 }
