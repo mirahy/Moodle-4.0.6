@@ -286,7 +286,9 @@ function adicionarUsuariosApenas($usuarios, $courseid, $senhaPadrao = '', $desat
     $enrols = get_all_users_course($courseid);
 	foreach ($usuarios as $usuario) {
 		$log ='';
+		$entraNaConta = false;
 		$cpf = strtolower(trim($usuario[0]));
+		$nomeUsuario = $usuario[2];
 
 		//Checa se é Professor ou estudante e atribui o roleid
 		$roleid = $usuario[4] ? 3 : 5; 
@@ -315,7 +317,7 @@ function adicionarUsuariosApenas($usuarios, $courseid, $senhaPadrao = '', $desat
 				$log .= ' Usuário inserido no Moodle com sucesso ';
 		}
 
-		$log .= '<b>'.$cpf.'</b>: ';
+		$log .= '<b>'.$cpf.' - '.$nomeUsuario.'</b>: ';
 
 		if ($courseid) {
 			$enrol = get_enrolments($user->id,$courseid);
@@ -324,10 +326,12 @@ function adicionarUsuariosApenas($usuarios, $courseid, $senhaPadrao = '', $desat
 				if ($enrol->status && $desativaEstudantes) {
 					reativaEstudante($enrol->id);
 					$log .= ' Reativado, ';
+					$entraNaConta = true;
 				}
 				unset($enrols[$enrol->id]);
 			} 
 			else {
+				$entraNaConta = true;
 				if(set_enrolments($user->id,$courseid))//Matricula um aluno em um curso
 					$log .= ' <span style="color: #088A08;">Matricula inserida com sucesso</span>, ';
 				else 
@@ -338,6 +342,7 @@ function adicionarUsuariosApenas($usuarios, $courseid, $senhaPadrao = '', $desat
 				$log .= 'já está com papel de '.$rolename;
 			} 
 			else {
+				$entraNaConta = true;
 				if(set_assignments($user->id,$courseid,$roleid))//Atribui o papel(estudante:5 || professor: 3 ) na matricula de um curso
 					$log .= ' <span style="color: #088A08;">Papel inserido com sucesso.</span>';
 				else  
@@ -346,7 +351,8 @@ function adicionarUsuariosApenas($usuarios, $courseid, $senhaPadrao = '', $desat
 		}
 		
 
-		echo $log.'<br><br>';
+		if (!$desativaEstudantes || $entraNaConta)
+			echo $log.'<br><br>';
 	}
 	if ($desativaEstudantes && count($enrols)) {
 		echo desativaEstudantes($enrols);
