@@ -641,7 +641,7 @@ function get_all_users_course($courseid) {
     $enrolid = get_enrol($courseid);
 	$contextid = get_context($courseid);
 
-    $sql = "SELECT e.id, e.userid, r.roleid, u.username, e.status
+    $sql = "SELECT e.id, e.userid, r.roleid, u.username, e.status, u.firstname, u.lastname
 		FROM {user_enrolments} e 
 		JOIN {role_assignments} r ON e.userid = r.userid
 		JOIN {user} u ON e.userid = u.id
@@ -658,7 +658,7 @@ function desativaEstudantes($enrols) {
 				'id' => $e->id,
 				'status' => 1
 			];
-			$ret .= "<br><b>". $e->username . "</b>";
+			$ret .= "<br><b>". $e->username . " - ". $e->firstname . " ". $e->lastname . "</b>";
 			$DB->update_record("user_enrolments", $obj);
 		}
 	}
