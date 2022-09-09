@@ -83,7 +83,8 @@ deploy-job: # This job runs in the deploy stage.
   only:
     - master
   tags:
-    - kubernetes # usar o runner do cluster kubernetes
+    - images
+    - docker # usar o runner do cluster kubernetes
 
 uninstall-job:
   stage: uninstall
@@ -97,4 +98,5 @@ uninstall-job:
   only:
     - master
   tags:
-    - kubernetes
+    - images
+    - docker
