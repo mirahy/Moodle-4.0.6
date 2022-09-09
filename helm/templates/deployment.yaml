@@ -25,9 +25,9 @@ spec:
     spec:
       {{- if .Values.volume.enabled }}
       volumes:
-        - name: {{ .Values.volume.name }}
+        - name: {{ .Values.applicationName }}-vol
           persistentVolumeClaim:
-            claimName: {{ .Values.volume.name }}-nfs
+            claimName: {{ .Values.applicationName }}-vol-nfs
       {{- end }}
       containers:
       - name: {{ .Values.applicationName }}
@@ -46,7 +46,7 @@ spec:
             cpu: {{ .Values.resources.requests.cpu }}
         {{- if .Values.volume.enabled }}
         volumeMounts:
-          - name: {{ .Values.volume.name }}
+          - name: {{ .Values.applicationName }}-vol
             mountPath: {{ .Values.volume.mountPath }}
         {{- end }}
         {{- if .Values.env }}
