@@ -2,14 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-applicationName: helm-ead-moodle
+applicationName: 
 domain: ufgd.edu.br
 applicationPort: 80
 
 replicaCount: 2
 
 image:
-  repository: registry.ufgd.edu.br/ead/moodle:latest
+  repository: registry.ufgd.edu.br/ead/moodle-ead-ufgd:latest
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -49,8 +49,8 @@ service:
   protocol: TCP
 
 ingress:
-  name: helm-ead-moodle-ingress
-  url: moodle.homolog.ead.ufgd.edu.br
+  name: 
+  url: 
   enabled: false
   annotations:
     # kubernetes.io/ingress.class: nginx
@@ -90,7 +90,7 @@ affinity: {}
 
 volume:
   enabled: true
-  name: helm-ead-moodle-vol
+  name: 
   mountPath: /var/moodledata
   capacity:
     storage: 500Mi
@@ -101,10 +101,17 @@ volume:
 # os valores podem ser alterados no cli. Ex: helm install --set env.normal.MY_VAR=teste,env.secret.MY_SECRET=123456
 env:
   normal:
-    DB_TYPE: pgsql
-    DB_HOST: 200.129.209.212
-    DB_USER: moodleufgd
-    DB_NAME: Moodle-Docker-Homolog
-    DOMAIN_NAME: "http://moodle.homolog.ead.ufgd.edu.br"
+    DB_TYPE: 
+    DB_HOST: 
+    DB_USER: 
+    DB_PASSWORD: 
+    DB_NAME: 
+    DOMAIN_NAME: 
+    LINK_SUPORTE:                               # usado para chamar web services
+    BLOCK_HOST_SUPORTE:                         # usado para bloqueio de ip de requisições no auto-restore.php, "*" libera para todos
+    SENHA_PADRAO_CONTAS_MANUAIS: 
+    ADLDAP_CONTROLLERS: 
+    ADLDAP_BASEDN: 
+    ADLDAP_ADMIN_USERNAME: 
+    ADLDAP_ADMIN_PASSWORD: 
   secret:
-    DB_PASSWORD: "121387#@"

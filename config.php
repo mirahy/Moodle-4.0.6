@@ -18,7 +18,11 @@ $CFG->dboptions = array (
   'dbcollation' => 'utf8mb4_general_ci',
 );
 
-$CFG->wwwroot   = getenv('DOMAIN_NAME');
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+  $CFG->wwwroot   = 'https://' . $_SERVER['HTTP_HOST'];
+} else {
+  $CFG->wwwroot   = 'http://' . $_SERVER['HTTP_HOST'];
+}
 $CFG->dataroot  = '/var/moodledata';
 $CFG->admin     = 'admin';
 
