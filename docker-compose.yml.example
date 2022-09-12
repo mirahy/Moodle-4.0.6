@@ -9,12 +9,13 @@ services:
         volumes:
             - ../docker-moodledata:/var/moodledata
         environment:
+            APP_ENV: development
             DB_TYPE: pgsql
             DB_HOST: host-db
             DB_USER: postgres
             DB_PASSWORD: secret
             DB_NAME: moodle
-            DOMAIN_NAME: "http://host-moodle"
+            DOMAIN_NAME: "host-moodle"
             LINK_SUPORTE: "https://suporte.ead.ufgd.edu.br" # usado para chamar web services
             BLOCK_HOST_SUPORTE: "*"                         # usado para bloqueio de ip de requisições no auto-restore.php, "*" libera para todos
             SENHA_PADRAO_CONTAS_MANUAIS: "eadufgd"

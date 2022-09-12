@@ -18,17 +18,23 @@ $CFG->dboptions = array (
   'dbcollation' => 'utf8mb4_general_ci',
 );
 
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+if (getenv('APP_ENV') && getenv('APP_ENV') == "production") {
   $CFG->wwwroot   = 'https://' . $_SERVER['HTTP_HOST'];
+  $CFG->sslproxy = 1;
 } else {
   $CFG->wwwroot   = 'http://' . $_SERVER['HTTP_HOST'];
 }
+
 $CFG->dataroot  = '/var/moodledata';
 $CFG->admin     = 'admin';
 
 $CFG->directorypermissions = 0777;
 
 require_once(__DIR__ . '/lib/setup.php');
+
+//Configurações para upgrade de http em https
+header("Upgrade-Insecure-Requests: 1");
+header("Content-Security-Policy: upgrade-insecure-requests;");
 
 // There is no php closing tag in this file,
 // it is intentional because it prevents trailing whitespace problems!
