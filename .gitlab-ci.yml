@@ -24,7 +24,7 @@ stages: # List of stages for jobs, and their order of execution
   - uninstall
 
 variables:
-  HELM_RELEASE_NAME: helm-ead-moodle
+  HELM_RELEASE_NAME: $APPLICATION_NAME
   HELM_CHART_FOLDER_NAME: helm
   IMAGE_TAG_REPO_BRANCH: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   IMAGE_TAG_PIPELINE_NUMBER: $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID
