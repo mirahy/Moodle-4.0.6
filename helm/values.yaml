@@ -101,6 +101,7 @@ volume:
 # os valores podem ser alterados no cli. Ex: helm install --set env.normal.MY_VAR=teste,env.secret.MY_SECRET=123456
 env:
   normal:
+    APP_ENV: 
     DB_TYPE: 
     DB_HOST: 
     DB_USER: 
