@@ -105,6 +105,7 @@ env:
     DB_TYPE: 
     DB_HOST: 
     DB_USER: 
+    DB_PREFIX: 
     DB_PASSWORD: 
     DB_NAME: 
     DOMAIN_NAME: 
