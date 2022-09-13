@@ -14,8 +14,8 @@ spec:
     - hard
     - nfsvers=4.1
   nfs:
-    path: /exports/k8sufgd/{{ .Values.applicationName }}-vol
-    server: nfs.ufgd.edu.br
+    path: /nfs/exports/{{ .Values.applicationName }}-vol
+    server: nfs.ead.ufgd.edu.br
 
 ---
 apiVersion: v1

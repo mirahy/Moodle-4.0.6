@@ -32,9 +32,5 @@ $CFG->directorypermissions = 0777;
 
 require_once(__DIR__ . '/lib/setup.php');
 
-//Configurações para upgrade de http em https
-header("Upgrade-Insecure-Requests: 1");
-header("Content-Security-Policy: upgrade-insecure-requests;");
-
 // There is no php closing tag in this file,
 // it is intentional because it prevents trailing whitespace problems!
