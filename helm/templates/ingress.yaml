@@ -51,4 +51,4 @@ spec:
   tls:
   - hosts:
     - "{{ .Values.ingress.url }}"
-    secretName: {{ .Values.ingress.tls.secretName }}
+    secretName: {{ .Values.applicationName }}-cert-secret
