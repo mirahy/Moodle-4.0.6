@@ -8,7 +8,7 @@ RUN sed -ri -e 's!;max_input_vars = 1000!max_input_vars = 5000!g' $PHP_INI_DIR/p
 RUN cp "$PHP_INI_DIR/php.ini-production" $PHP_INI_DIR/php.ini 
 
 RUN apt-get update && apt-get install -y \
-        libpng-dev wget libzip-dev zlib1g-dev libicu-dev libpq-dev libxml2-dev libldap2-dev ghostscript \
+        libpng-dev wget libzip-dev zlib1g-dev libicu-dev libpq-dev libxml2-dev libldap2-dev ghostscript nano \
     && docker-php-ext-configure gd \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure zip \
