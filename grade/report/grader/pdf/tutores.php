@@ -25,7 +25,7 @@ try
     $sqlUnif =  "SELECT rs.id, u.firstname, u.lastname, u.id as userid, cu.fullname, rs.roleid, cu.id as courseid, cu.category
                    FROM {role_assignments} rs 
              INNER JOIN {user} u ON u.id=rs.userid INNER JOIN {context} c ON rs.contextid=c.id INNER JOIN {course} cu ON c.instanceid=cu.id 
-                  WHERE c.contextlevel=50 AND (rs.roleid=$TUTORAD or rs.roleid=$FORMADOR) AND (cu.startdate <= ? AND cu.enddate >=?) ORDER BY cu.fullname ASC";//  ORDER BY l.id DESC LIMIT 1";
+                  WHERE c.contextlevel=50 AND (rs.roleid=$TUTORAD or rs.roleid=$FORMADOR) AND (cu.startdate <= ? AND cu.enddate >=?) AND cu.category =? ORDER BY cu.fullname ASC";//  ORDER BY l.id DESC LIMIT 1";
     
     $sqllog = "SELECT l.id, l.timecreated 
                   FROM {logstore_standard_log} l 
@@ -34,7 +34,7 @@ try
 
     $data = time();
 
-    $cursos = $DB->get_records_sql($sqlUnif,array($data,$data));
+    $cursos = $DB->get_records_sql($sqlUnif,array($data,$data,$categoria));
 
     $cursos = array_values($cursos);
 
