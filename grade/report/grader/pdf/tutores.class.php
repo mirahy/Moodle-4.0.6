@@ -1,22 +1,10 @@
 <?php
-/**
- * Classe Registro de notas
- * Encapsula o Relaatório de notas em PDF
- */
+
 class RegistroNotas
 {
     private $pdf;            // objeto PDF
-    private $produtos;       // Vetor de Produtos
-    private $total_produtos; // Valor total de produtos
-    private $count_produtos; // Quantidade de produtos
 
-    /**
-     * Método construtor
-     * Instancia o objeto FPDF
-     * @param $numero numero da nota fiscal
-     * @param $data data de emissão
-     */
-    public function __construct($numero)
+    public function __construct()
     {
         // Define o diretório das fontes
         define('FPDF_FONTPATH', getcwd() . '/app.util/pdf/font/');
@@ -37,8 +25,6 @@ class RegistroNotas
         $image  = 'header_logo.gif';
         $this->pdf->Image($image, 25, 20, 50);
        
-
-     //   $this->pdf->SetLineWidth(1);
         $this->pdf->SetTextColor(0,0,0);
         $this->pdf->SetFont('Arial','',6);
         $this->pdf->SetXY(80,30);
@@ -54,11 +40,6 @@ class RegistroNotas
 
     }
 
-    /**
-     * Método addCliente
-     * Adiciona um cliente na nota
-     * @param $cliente Objeto contendo os atributos do cliente
-     */
     public function addDisciplina($disciplina)//cabeçalho turma
     {
         $this->pdf->SetY(70);
@@ -75,9 +56,6 @@ class RegistroNotas
 
     }
 
-    /**
-     * Adiciona a linha de cabeçalho para os produtos
-     */
     public function addCabecalhoProduto()
     {
        // $this->pdf->SetY(140);
@@ -98,16 +76,12 @@ class RegistroNotas
         $this->pdf->Cell(130,  15, 'ÚLTIMO ACESSO', 1, 0, 'C', 1);
 
     }
-    
-    /**
-     * Adiciona um produto na nota
-     * @param $produto Objeto com os atributos do produto
-     */
+
     public function addNota($nota, $faltas)
     {
-        $datetime2 = time();
+        $datetime = time();
 
-        $segundos_diferenca =  $datetime2 - $nota->timecreated; //- 1418809913; - 24hverd
+        $segundos_diferenca =  $datetime - $nota->timecreated; 
         $horas_diferenca = (int)floor( $segundos_diferenca / ( 60));
         $horas = (int) $horas_diferenca /60;
 
@@ -128,7 +102,7 @@ class RegistroNotas
 
         $this->pdf->Cell(310, 15, substr($nota->firstname.' '.$nota->lastname, 0, 38), '1', 0, 'L');
 
-        if ($nota->roleid == 9)
+        if ($nota->roleid == 4)
             $funcao = 'Tutor(a) a distância';
         else $funcao = 'Prof(a) Formador(a)';
 
@@ -137,8 +111,8 @@ class RegistroNotas
         if ($nota->timecreated ==0){
             $this->pdf->Cell(130,  15, 'Nunca', '1', 0, 'C');
         }else{
-            $this->pdf->Cell(90,  15, ''.date("d/m/Y H:i:s",$nota->timecreated ), '1', 0, 'C');//pegar data
-            $this->pdf->Cell(40,  15, ''.(int)$horas.' h', '1', 0, 'C');//pegar data
+            $this->pdf->Cell(90,  15, ''.date("d/m/Y H:i:s",$nota->timecreated ), '1', 0, 'C');
+            $this->pdf->Cell(40,  15, ''.(int)$horas.' h', '1', 0, 'C');
         }
         $this->pdf->SetTextColor(0,0,0);
         $this->pdf->SetFont('','', '');
@@ -147,10 +121,6 @@ class RegistroNotas
 
     
     
-    /**
-     * Adiciona o rodapé ao final da lista de produtos
-     * Este método completa o espaço da listagem
-     */
     public function addRodapeNota()
     {
         global $USER;
@@ -168,50 +138,7 @@ class RegistroNotas
     
     }
     
-    /**
-     * Adiciona o rodapé da nota
-     */
-    public function addRodapeAssinatura()
-    {
-        
-    //    if ($this->pdf->GetY()>420 ){
-      //      $this->pdf->AddPage();
-        //    $this->pdf->Ln(20);
-        //}
-        $this->pdf->Ln(30);
-        
-        $this->pdf->SetFont('Arial','',8);
-        $this->pdf->SetTextColor(0,0,0);
-/*
-        $this->pdf->SetX(100);
-        $this->pdf->Cell(190,  12, '', 0, 0, 'C');
-        $this->pdf->Cell(230, 12, '', 'B', 0, 'L');
-        $this->pdf->Cell(120,  12, '', 0, 0, 'C');
-        //$this->pdf->Cell(130, 12, '', 'B', 0, 'L');
-        $this->pdf->Cell(20,  12, '', 0, 0, 'C');
-        //$this->pdf->Cell(130,  12, '', 'B', 0, 'C');
 
-        $this->pdf->Cell(20,  12, '', 0, 0, 'R');
-        $this->pdf->Ln(12);
-
-        $this->pdf->SetX(100);
-        $this->pdf->Cell(190,  12, '', 0, 0, 'C');
-
-        $this->pdf->Cell(230,  12, 'Coordenador(a) de Tutoria', 0, 0, 'C');
-        $this->pdf->Cell(120,  12, '', 0, 0, 'C');
-      // $this->pdf->Cell(130,  12, 'Tutor Presencial', 0, 0, 'C');
-        $this->pdf->Cell(20,  12, '', 0, 0, 'C');
-        //$this->pdf->Cell(130,  12, 'Coordenador do Curso', 0, 0, 'C');
-        //$this->pdf->Cell(20,  12, '', 0, 0, 'R');
-*/
-        $this->pdf->Ln(12);
-        
-    }
-    
-    /**
-     * Salva a nota fiscal em um arquivo
-     * @param $arquivo localização do arquivo de saída
-     */
     public function gerar($arquivo)
     {
         // salva o PDF
