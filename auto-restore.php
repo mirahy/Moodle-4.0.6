@@ -3,10 +3,10 @@ require_once('config.php');
 require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
 require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
 
-//liberar requisições apenas apartir do sistema de suporte
-$pegar_ip = $_SERVER["REMOTE_ADDR"];
-if (getenv('BLOCK_HOST_SUPORTE') !== "*" && $pegar_ip != getenv('BLOCK_HOST_SUPORTE'))
-	exit("Requisição Não permitida apartir desta origem!");
+//liberar requisições apenas com a chave de acesso
+$chave_webservice = isset ($_POST['chaveWebservice']) && $_POST['chaveWebservice'] ? $_POST['chaveWebservice'] : null;
+if (getenv('CONTRACHAVE_WEBSERVICE_MOODLE') !== "*" && base64_encode(hash_hmac('sha256',base64_decode($chave_webservice),true)) != getenv('CONTRACHAVE_WEBSERVICE_MOODLE'))
+	exit("Requisição Não permitida!");
 /*require_login();
 if (!is_siteadmin()){ // Somente administrador do Moodle acessa essa página
 	redirect("$CFG->wwwroot/");
