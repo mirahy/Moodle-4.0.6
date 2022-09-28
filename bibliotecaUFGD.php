@@ -8,7 +8,7 @@ global $CFG, $COURSE;
 //require_login();
 
 function consultaDadosCartao($documento) {
-    $numCartao = conectaWebService("/usuario-cartao/$documento");
+    $numCartao = conectaWebService("/usuario-cartao", $documento);
     return $numCartao ? $numCartao : $documento;
 }
 

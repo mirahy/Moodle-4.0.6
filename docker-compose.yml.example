@@ -23,6 +23,7 @@ services:
             ADLDAP_BASEDN: "dc=ufgd,dc=edu,dc=br"
             ADLDAP_ADMIN_USERNAME: "eadbind@ufgd.edu.br"
             ADLDAP_ADMIN_PASSWORD: 
+            CHAVE_WEBSERVICE_SUPORTE: 
             CONTRACHAVE_WEBSERVICE_MOODLE: 
         networks:
             minha-rede:
