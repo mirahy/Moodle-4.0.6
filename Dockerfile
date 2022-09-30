@@ -8,12 +8,19 @@ RUN sed -ri -e 's!;max_input_vars = 1000!max_input_vars = 5000!g' $PHP_INI_DIR/p
 RUN cp "$PHP_INI_DIR/php.ini-production" $PHP_INI_DIR/php.ini 
 
 RUN apt-get update && apt-get install -y \
-        libpng-dev wget libzip-dev zlib1g-dev libicu-dev libpq-dev libxml2-dev libldap2-dev ghostscript nano \
+        libpng-dev wget libzip-dev zlib1g-dev libicu-dev libpq-dev libxml2-dev libldap2-dev ghostscript nano git \
     && docker-php-ext-configure gd \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure zip \
     && docker-php-ext-install gd intl zip pgsql pdo pdo_pgsql opcache xmlrpc soap ldap exif \
-    && wget -O /tmp/moodle.tgz https://download.moodle.org/stable311/moodle-latest-311.tgz \
-    && tar -xzf /tmp/moodle.tgz --strip-components=1 -C /var/www/html
+    && echo "\n" | pecl install redis \ 
+    && echo "extension=redis.so" > $PHP_INI_DIR/conf.d/docker-php-ext-redis.ini \
+    && git clone https://gitlab+deploy-token-8:su9ZYPs8bgQG7x8rQrVi@git.ufgd.edu.br/ead/repositorio/moodle-3.11.10_2021051710.02.git /var/www/html
+    
+RUN mkdir /var/moodledata-local \
+    && mkdir /var/moodledata-local/temp \
+    && mkdir /var/moodledata-local/cache \
+    && mkdir /var/moodledata-local/localcache \
+    && chown www-data:www-data /var/moodledata-local -R
 
 COPY . /var/www/html
