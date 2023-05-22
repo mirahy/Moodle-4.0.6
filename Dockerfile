@@ -4,6 +4,7 @@ ENV PHP_EXTRA_CONFIGURE_ARGS: "--with-zip --with-pgsql"
 
 RUN sed -ri -e 's!;max_input_vars = 1000!max_input_vars = 5000!g' $PHP_INI_DIR/php.ini* \
     && sed -ri -e 's!upload_max_filesize = 2M!upload_max_filesize = 1024M!g' $PHP_INI_DIR/php.ini* \
+    && sed -ri -e 's!max_execution_time = 30!max_execution_time = 180!g' $PHP_INI_DIR/php.ini* \
     && sed -ri -e 's!post_max_size = 8M!post_max_size = 1024M!g' $PHP_INI_DIR/php.ini*
 RUN cp "$PHP_INI_DIR/php.ini-production" $PHP_INI_DIR/php.ini 
 
