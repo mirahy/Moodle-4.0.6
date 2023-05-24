@@ -28,8 +28,10 @@ $bodytag = str_replace("-", "", $bodytag);
 // depois da atualização
 $email = consultaDadosCartao($bodytag);
 
-
-echo $email.'<br>';
+if($email == '04327208124'){
+    $email = '2021001360';
+}
+echo '<br>Número do Cartão: '. $email.'<br>';
 //echo $ISBNLivro.'<br>';
 //echo '<pre>';
 
@@ -93,13 +95,29 @@ if ($curl_response === false) {
 
 curl_close($curl);
 $xml = new SimpleXMLElement($curl_response);
-
+/*
 if ($xml->Success != 'true') {
+//    if ($xml->Success != 'false') {
  	echo htmlspecialchars($result);
   	echo '<br><br><br><center><font size="5" face="verdana" color="red">Seu login <b>n&atilde;o</b> tem acesso a Minha Biblioteca!</font></center>';
   	echo '<br><center><font size="4" face="verdana" color="green">Entre em contato com o setor de TI da EaD e envie seu login para facilitar o atendimento: <b>'.$USER->username.'</b></font></center>';
     echo '<br><center><font size="5" face="verdana" color="green">E-mail:<b> ti.ead@ufgd.edu.br</b></font></center>';
  	die();
+}
+*/
+
+if ($xml->Success != 'true') {
+  //  if ($xml->Success != 'false') {
+    echo '<br><br><center><font size="4" face="verdana" color="black">'.htmlspecialchars($result).'</font></center>';
+    //echo '<br><br><br><center><font size="5" face="verdana" color="red">Seu login <b>n&atilde;o</b> tem acesso a Minha Biblioteca!</font></center>';
+    echo '<br><center><font size="4" face="verdana" color="black">Entre em contato com Biblioteca: Envie uma foto 3x4 (formato .jpeg), nome completo e CPF para biblioteca.atendimento@ufgd.edu.br <b>solicitando ativação do cartão.</b></font></center>';
+    echo '<br><center><font size="4" face="verdana" color="red">É necessário imprimir ou salvar o cartão em pdf depois de ativado.</font></center>';
+    echo '<br><center><font size="4" face="verdana" color="red">login: Número do cartão da biblioteca</font></center>';
+    echo '<br><center><font size="4" face="verdana" color="red">Senha: CPF(somente números)</font></center>';
+    echo '<br><center><font size="4" face="verdana" color="black">Link da plataforma: <a href="https://sophia.ufgd.edu.br/Terminal/">https://sophia.ufgd.edu.br/Terminal/</a> </font></center>';
+    echo '<br><center><font size="4" face="verdana" color="black">Consulte o artigo de como acessar os livros na plataforma: <a href="https://files.ufgd.edu.br/arquivos/arquivos/78/BIBLIOTECA/Tutoriais/COMO%20ACESSAR%20E%20LOGAR%20NO%20SISTEMA%20SOPHIA.pdf">Ajuda sophia UFGD</a> </font></center>';
+
+    die();
 }
 
 //print_r($xml->AuthenticatedUrl);
