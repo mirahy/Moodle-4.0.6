@@ -108,15 +108,20 @@ if ($xml->Success != 'true') {
 
 if ($xml->Success != 'true') {
   //  if ($xml->Success != 'false') {
-    echo '<br><br><center><font size="4" face="verdana" color="black">'.htmlspecialchars($result).'</font></center>';
+ //   echo '<br><br><center><font size="4" face="verdana" color="black">'.htmlspecialchars($result).'</font></center>';
     //echo '<br><br><br><center><font size="5" face="verdana" color="red">Seu login <b>n&atilde;o</b> tem acesso a Minha Biblioteca!</font></center>';
-    echo '<br><center><font size="4" face="verdana" color="black">Entre em contato com Biblioteca: Envie uma foto 3x4 (formato .jpeg), nome completo e CPF para biblioteca.atendimento@ufgd.edu.br <b>solicitando ativação do cartão.</b></font></center>';
-    echo '<br><center><font size="4" face="verdana" color="red">É necessário imprimir ou salvar o cartão em pdf depois de ativado.</font></center>';
-    echo '<br><center><font size="4" face="verdana" color="red">login: Número do cartão da biblioteca</font></center>';
-    echo '<br><center><font size="4" face="verdana" color="red">Senha: CPF(somente números)</font></center>';
-    echo '<br><center><font size="4" face="verdana" color="black">Link da plataforma: <a href="https://sophia.ufgd.edu.br/Terminal/">https://sophia.ufgd.edu.br/Terminal/</a> </font></center>';
+   // echo '<br><center><font size="4" face="verdana" color="black">Entre em contato com Biblioteca: Envie uma foto 3x4 (formato .jpeg), nome completo e CPF para biblioteca.atendimento@ufgd.edu.br <b>solicitando ativação do cartão.</b></font></center>';
+   // echo '<br><center><font size="4" face="verdana" color="red">É necessário imprimir ou salvar o cartão em pdf depois de ativado.</font></center>';
+   // echo '<br><center><font size="4" face="verdana" color="red">login: Número do cartão da biblioteca</font></center>';
+   // echo '<br><center><font size="4" face="verdana" color="red">Senha: CPF(somente números)</font></center>';
+   // echo '<br><center><font size="4" face="verdana" color="black">Link da plataforma: <a href="https://sophia.ufgd.edu.br/Terminal/">https://sophia.ufgd.edu.br/Terminal/</a> </font></center>';
+    //echo '<br><center><font size="4" face="verdana" color="black">Consulte o artigo de como acessar os livros na plataforma: <a href="https://files.ufgd.edu.br/arquivos/arquivos/78/BIBLIOTECA/Tutoriais/COMO%20ACESSAR%20E%20LOGAR%20NO%20SISTEMA%20SOPHIA.pdf">Ajuda sophia UFGD</a> </font></center>';
+    echo '<br><center><font size="4" face="verdana" color="black">Verifique se seu cartão UFGD tem foto e se está liberado para impressão no sistema de cartão: <a href="https://drive.google.com/file/d/1CLgjVxUz7vuAlN5G1jf17OocYy051PY3/view?usp=sharing">TUTORIAL DE COMO SOLICITAR E IMPRIMIR O CARTÃO DA UFGD</a></font></center>';
+
+
     echo '<br><center><font size="4" face="verdana" color="black">Consulte o artigo de como acessar os livros na plataforma: <a href="https://files.ufgd.edu.br/arquivos/arquivos/78/BIBLIOTECA/Tutoriais/COMO%20ACESSAR%20E%20LOGAR%20NO%20SISTEMA%20SOPHIA.pdf">Ajuda sophia UFGD</a> </font></center>';
 
+    echo '<br><center><font size="4" face="verdana" color="black">Consulte a página de Tutoriais da Biblioteca: <a href="https://www.ufgd.edu.br/setor/biblioteca/tutoriais">https://www.ufgd.edu.br/setor/biblioteca/tutoriais</a> </font></center>';
     die();
 }
 
