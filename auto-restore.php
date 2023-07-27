@@ -140,6 +140,9 @@ function restauraBackup($arquivoBackup, $idCategoria = null, $courseReplaceId = 
 		if ($courseReplaceId)
 			$controller->get_plan()->get_setting('keep_roles_and_enrolments')->set_value(true);
 		$controller->execute_plan();
+		
+		set_enrol('self', $courseid, 'Aluno inscreva-se aqui!', $_POST['pass_aluno']);
+
 		echo("Curso Criado: [".$courseid."]<br><br>");
 	} else {
 		exit('Falha ao processar course.xml.<br><br>');
@@ -530,6 +533,43 @@ function set_assignments($userid,$courseid,$roleid){
 }
 
 /**
+ * Insere um método de matrícula em um curso
+ * 
+ * @param String  $enrol 
+ * @param int     $courseid 
+ * @param String  $name 
+ * @param int     $password
+ *
+ * @return bool true if user enrolments created, else false.
+ */
+function set_enrol($enrol, $courseid, $name, $password){
+    global $DB;
+
+    // $enrolid = get_enrol('self', $courseid);
+
+    $userEnrolObject = new stdClass();
+    $userEnrolObject->enrol = $enrol;
+    $userEnrolObject->status = 0;
+    $userEnrolObject->courseid = $courseid;
+    $userEnrolObject->name =  $name;  
+    $userEnrolObject->expirythreshold = 86400; 
+    $userEnrolObject->password =  $password; 
+    $userEnrolObject->roleid =  5; 
+    $userEnrolObject->customint1 =  0; 
+    $userEnrolObject->customint2 =  0; 
+    $userEnrolObject->customint3 =  0; 
+    $userEnrolObject->customint4 =  1; 
+    $userEnrolObject->customint5 =  0; 
+    $userEnrolObject->customint6 =  1; 
+    $userEnrolObject->timecreated =  time(); 
+    $userEnrolObject->timemodified = time();
+
+    if($DB->insert_record('enrol', $userEnrolObject))
+        return true;
+     
+}
+
+/**
  * Verifica se existe matrícula de um usuário em um curso
  * 
  * @param int $userid
@@ -606,12 +646,12 @@ function get_context($courseid){
  *
  * @return int|bool returns enrolid if existing, else false.
  */
-function get_enrol($courseid){
+function get_enrol($enrol='manual', $courseid){
     global $DB;
 
     $sqlenrolid = " SELECT  e.id
                       FROM {enrol} e 
-                    WHERE e.enrol='manual' AND  e.courseid=?";
+                    WHERE e.enrol=$enrol AND  e.courseid=?";
     $enrol = $DB->get_record_sql($sqlenrolid, array($courseid));
 
     if($enrol)
