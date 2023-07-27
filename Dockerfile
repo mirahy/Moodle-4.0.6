@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd intl zip pgsql pdo pdo_pgsql opcache xmlrpc soap ldap exif \
     && echo "\n" | pecl install redis \ 
     && echo "extension=redis.so" > $PHP_INI_DIR/conf.d/docker-php-ext-redis.ini \
-    && git clone https://gitlab+deploy-token-8:su9ZYPs8bgQG7x8rQrVi@git.ufgd.edu.br/ead/repositorio/moodle-3.11.10_2021051710.02.git /var/www/html
+    && git clone https://gitlab+deploy-token-8:su9ZYPs8bgQG7x8rQrVi@git.ufgd.edu.br/ead/repositorio/moodle-4.0.6_2022041906.03.git /var/www/html
     
 RUN mkdir /var/moodledata-local \
     && mkdir /var/moodledata-local/temp \
