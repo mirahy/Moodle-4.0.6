@@ -136,12 +136,42 @@ function restauraBackup($arquivoBackup, $idCategoria = null, $courseReplaceId = 
 				backup::INTERACTIVE_NO, backup::MODE_SAMESITE, $adminAcc->id,
 				($courseReplaceId ? backup::TARGET_CURRENT_DELETING : backup::TARGET_NEW_COURSE));
 		$controller->get_logger()->set_next(new output_indented_logger(backup::LOG_INFO, false, true));
-		$controller->execute_precheck();
+		//$controller->execute_precheck();
+		//--
+		if (!$controller->execute_precheck()){
+			$precheckresults = $controller->get_precheck_results();
+			if (is_array($precheckresults) && !empty($precheckresults['errors'])) {
+				$errorinfo = '';
+
+                foreach ($precheckresults['errors'] as $error) {
+                    $errorinfo .= $error;
+                }
+
+                if (array_key_exists('warnings', $precheckresults)) {
+                    foreach ($precheckresults['warnings'] as $warning) {
+                        $errorinfo .= $warning;
+                    }
+                }
+
+                throw new moodle_exception('backupprecheckerrors', 'webservice', '', $errorinfo);
+				
+			}
+		}
+		//--;
+
 		if ($courseReplaceId)
 			$controller->get_plan()->get_setting('keep_roles_and_enrolments')->set_value(true);
 		$controller->execute_plan();
 		
-		set_enrol('self', $courseid, 'Aluno inscreva-se aqui!', $_POST['pass_aluno']);
+		if($_POST['pass_aluno']){
+			//if exist enrol self in course, update , else, create
+			$enrolid = get_enrol($courseid, 'self');
+			if($enrolid){
+				upd_enrol($enrolid, 'self', $courseid, 'Aluno inscreva-se aqui!', $_POST['pass_aluno']);
+			}else{
+				set_enrol('self', $courseid, 'Aluno inscreva-se aqui!', $_POST['pass_aluno']);
+			}
+		}
 
 		echo("Curso Criado: [".$courseid."]<br><br>");
 	} else {
@@ -540,12 +570,10 @@ function set_assignments($userid,$courseid,$roleid){
  * @param String  $name 
  * @param int     $password
  *
- * @return bool true if user enrolments created, else false.
+ * @return bool true if enrol created, else false.
  */
 function set_enrol($enrol, $courseid, $name, $password){
     global $DB;
-
-    // $enrolid = get_enrol('self', $courseid);
 
     $userEnrolObject = new stdClass();
     $userEnrolObject->enrol = $enrol;
@@ -566,6 +594,44 @@ function set_enrol($enrol, $courseid, $name, $password){
 
     if($DB->insert_record('enrol', $userEnrolObject))
         return true;
+     
+}
+
+/**
+ * Atualiza um método de matrícula em um curso
+ * 
+ * @param int     $idenrol 
+ * @param String  $enrol 
+ * @param int     $courseid 
+ * @param String  $name 
+ * @param int     $password
+ *
+ * @return bool true if enrol update, else false.
+ */
+function upd_enrol($idenrol, $enrol, $courseid, $name, $password){
+    global $DB;
+
+	$obj = [
+		'id' => $idenrol,
+    	'enrol' => $enrol,
+    	'status' => 0,
+    	'courseid' => $courseid,
+    	'name' =>  $name,
+    	'expirythreshold' => 86400,
+    	'password' =>  $password,
+    	'roleid' =>  5,
+    	'customint1' =>  0,
+    	'customint2' =>  0,
+    	'customint3' =>  0,
+    	'customint4' =>  1,
+    	'customint5' =>  0,
+    	'customint6' =>  1,
+    	'timecreated' =>  time(),
+    	'timemodified' => time()
+	];
+
+	if($DB->update_record("enrol", $obj))
+	  return true;
      
 }
 
@@ -643,16 +709,17 @@ function get_context($courseid){
  *  e permitira ocultar e excluir todo o metodo de inscrição com os alunos, caso fosse inscrito em um curso errado) 
  * 
  * @param int $courseid 
+ * @param string $enrol 
  *
  * @return int|bool returns enrolid if existing, else false.
  */
-function get_enrol($enrol='manual', $courseid){
+function get_enrol($courseid, $enrol='manual'){
     global $DB;
 
     $sqlenrolid = " SELECT  e.id
                       FROM {enrol} e 
-                    WHERE e.enrol=$enrol AND  e.courseid=?";
-    $enrol = $DB->get_record_sql($sqlenrolid, array($courseid));
+                    WHERE e.enrol=? AND  e.courseid=?";
+    $enrol = $DB->get_record_sql($sqlenrolid, array($enrol, $courseid));
 
     if($enrol)
       return $enrol->id;
