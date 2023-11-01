@@ -1,14 +1,22 @@
 <?php
 
 require_once('config.php');
-require_once('conexao-web-service.php');
+// require_once('conexao-web-service.php');
+require_once('sigecad-consulta.php');
 require_once($CFG->libdir . '/adminlib.php');
 global $CFG, $COURSE;
 
+
+
 //require_login();
 
+// function consultaDadosCartao($documento) {
+//     $numCartao = conectaWebService("usuario-cartao", $documento);
+//     return $numCartao ? $numCartao : $documento;
+// }
+
 function consultaDadosCartao($documento) {
-    $numCartao = conectaWebService("usuario-cartao", $documento);
+    $numCartao = cosultaCartao($documento); 
     return $numCartao ? $numCartao : $documento;
 }
 
@@ -130,5 +138,6 @@ redirect($xml->AuthenticatedUrl);
 //echo $xml->AuthenticatedUrl;
 //echo '<script type="text/javascript">window.open(\''.$xml->AuthenticatedUrl.'\');</script>';
 //die();
+ 
 
 ?>
